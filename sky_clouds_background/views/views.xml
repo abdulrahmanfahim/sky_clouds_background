@@ -1,113 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="ramadan_theme_layout" name="Cloudy Sky Background" inherit_id="website.layout" priority="50">
-        <!-- Replace head content with new styles -->
+    <template id="sky_clouds_background_layout" name="Rainy Cloudy Sky Background" inherit_id="website.layout" priority="50">
+        <!-- Add styles for rainy sky background -->
         <xpath expr="//head" position="inside">
             <style type="text/css">
                 <![CDATA[
-                /* ===== REALISTIC BLUE SKY GRADIENT ===== */
-                .sky-background {
+                /* ===== DARK RAINY SKY GRADIENT ===== */
+                .rainy-sky-background {
                     position: fixed;
                     top: 0;
                     left: 0;
                     width: 100%;
                     height: 100%;
-                    background: linear-gradient(145deg, #b0e0ff 0%, #7ec8ff 40%, #4aa3ff 100%);
-                    z-index: -2;
+                    background: linear-gradient(145deg, #4a6b7a 0%, #2c4a5a 40%, #1a2f3a 100%);
+                    z-index: -3;
                     pointer-events: none;
                 }
 
-                /* ===== CLOUD ANIMATIONS ===== */
+                /* ===== CLOUDS - STATIC ON SCREEN ===== */
                 .cloud {
                     position: fixed;
                     background-image: url('/sky_clouds_background/static/description/cloud.png');
                     background-size: contain;
                     background-repeat: no-repeat;
                     pointer-events: none;
-                    z-index: -1;
-                    opacity: 0.8;
-                    animation: slideClouds linear infinite;
+                    z-index: -2;
+                    opacity: 0.7;
                 }
 
-                /* Multiple cloud variations for natural drift */
+                /* Multiple cloud variations placed on-screen */
                 .cloud1 {
-                    width: 250px;
-                    height: 120px;
-                    top: 10%;
-                    left: -300px;
-                    animation-duration: 45s;
-                    animation-delay: 0s;
-                }
-                .cloud2 {
-                    width: 300px;
-                    height: 150px;
-                    top: 30%;
-                    left: -350px;
-                    animation-duration: 60s;
-                    animation-delay: 5s;
-                }
-                .cloud3 {
-                    width: 200px;
-                    height: 100px;
-                    top: 55%;
-                    left: -250px;
-                    animation-duration: 35s;
-                    animation-delay: 10s;
-                }
-                .cloud4 {
                     width: 280px;
                     height: 140px;
-                    top: 75%;
-                    left: -330px;
-                    animation-duration: 55s;
-                    animation-delay: 2s;
+                    top: 5%;
+                    left: 5%;
+                }
+                .cloud2 {
+                    width: 350px;
+                    height: 175px;
+                    top: 15%;
+                    right: 5%;
+                }
+                .cloud3 {
+                    width: 220px;
+                    height: 110px;
+                    top: 35%;
+                    left: 15%;
+                }
+                .cloud4 {
+                    width: 300px;
+                    height: 150px;
+                    top: 45%;
+                    right: 10%;
                 }
                 .cloud5 {
-                    width: 180px;
-                    height: 90px;
-                    top: 15%;
-                    left: -220px;
-                    animation-duration: 40s;
-                    animation-delay: 15s;
+                    width: 200px;
+                    height: 100px;
+                    top: 65%;
+                    left: 20%;
                 }
                 .cloud6 {
                     width: 320px;
                     height: 160px;
-                    top: 45%;
-                    left: -370px;
-                    animation-duration: 70s;
-                    animation-delay: 8s;
+                    top: 75%;
+                    right: 15%;
                 }
                 .cloud7 {
-                    width: 220px;
-                    height: 110px;
-                    top: 65%;
-                    left: -270px;
-                    animation-duration: 50s;
-                    animation-delay: 3s;
+                    width: 250px;
+                    height: 125px;
+                    top: 25%;
+                    left: 30%;
                 }
                 .cloud8 {
-                    width: 260px;
-                    height: 130px;
-                    top: 85%;
-                    left: -310px;
-                    animation-duration: 65s;
-                    animation-delay: 12s;
+                    width: 280px;
+                    height: 140px;
+                    top: 55%;
+                    right: 25%;
                 }
 
-                @keyframes slideClouds {
+                /* ===== RAIN ANIMATION ===== */
+                .rain-container {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    pointer-events: none;
+                    z-index: -1;
+                    overflow: hidden;
+                }
+
+                .raindrop {
+                    position: absolute;
+                    width: 2px;
+                    height: 15px;
+                    background: linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(174,194,224,0.6));
+                    border-radius: 0 0 3px 3px;
+                    animation: rain linear infinite;
+                    opacity: 0.5;
+                }
+
+                @keyframes rain {
                     0% {
-                        transform: translateX(0);
+                        transform: translateY(-20vh) translateX(0);
+                        opacity: 0.5;
                     }
                     100% {
-                        transform: translateX(150vw); /* Move far right beyond screen */
+                        transform: translateY(120vh) translateX(10px);
+                        opacity: 0.2;
                     }
                 }
 
-                /* Responsive adjustments for smaller screens */
+                /* Responsive adjustments */
                 @media (max-width: 768px) {
                     .cloud {
-                        opacity: 0.6; /* Lighter on mobile */
+                        opacity: 0.5;
                     }
                     .cloud1 { width: 180px; height: 90px; }
                     .cloud2 { width: 220px; height: 110px; }
@@ -119,7 +126,7 @@
                     .cloud8 { width: 190px; height: 95px; }
                 }
 
-                /* Ensure content stays above background and clouds */
+                /* Ensure content stays above background */
                 #wrap {
                     position: relative;
                     z-index: 10;
@@ -135,12 +142,12 @@
             </style>
         </xpath>
 
-        <!-- Add sky background and clouds to body -->
+        <!-- Add rainy sky background and static clouds to body -->
         <xpath expr="//body" position="inside">
-            <!-- Sky gradient background -->
-            <div class="sky-background"></div>
+            <!-- Dark rainy sky gradient background -->
+            <div class="rainy-sky-background"></div>
 
-            <!-- Drifting clouds -->
+            <!-- Static clouds (on-screen, no sliding) -->
             <div class="cloud cloud1"></div>
             <div class="cloud cloud2"></div>
             <div class="cloud cloud3"></div>
@@ -149,11 +156,50 @@
             <div class="cloud cloud6"></div>
             <div class="cloud cloud7"></div>
             <div class="cloud cloud8"></div>
+
+            <!-- Rain container (dynamic raindrops) -->
+            <div class="rain-container" id="rain-container"></div>
         </xpath>
 
-        <!-- Remove any existing script (no longer needed) -->
+        <!-- Add script to generate raindrops -->
         <xpath expr="//body" position="after">
-            <!-- Intentionally empty – all old elements removed -->
+            <script type="text/javascript">
+                <![CDATA[
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Generate raindrops
+                    const rainContainer = document.getElementById('rain-container');
+                    const isMobile = window.innerWidth <= 768;
+                    
+                    if (rainContainer) {
+                        rainContainer.innerHTML = '';
+                        const raindropCount = isMobile ? 100 : 200;
+                        
+                        for (let i = 0; i < raindropCount; i++) {
+                            const raindrop = document.createElement('div');
+                            raindrop.className = 'raindrop';
+                            
+                            // Random position
+                            raindrop.style.left = Math.random() * 100 + '%';
+                            raindrop.style.top = Math.random() * 100 + '%';
+                            
+                            // Random animation duration (faster on mobile)
+                            const duration = isMobile ? 0.8 + Math.random() * 0.7 : 1 + Math.random() * 1.5;
+                            raindrop.style.animation = `rain ${duration}s linear infinite`;
+                            
+                            // Random delay
+                            raindrop.style.animationDelay = (Math.random() * 2) + 's';
+                            
+                            // Random size variation
+                            const height = isMobile ? 8 + Math.random() * 7 : 10 + Math.random() * 10;
+                            raindrop.style.height = height + 'px';
+                            raindrop.style.width = (1 + Math.random() * 1) + 'px';
+                            
+                            rainContainer.appendChild(raindrop);
+                        }
+                    }
+                });
+                ]]>
+            </script>
         </xpath>
     </template>
 </odoo>
