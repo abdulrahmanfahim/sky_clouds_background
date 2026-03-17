@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="ramadan_theme_layout" name="Cloudy Sky Background" inherit_id="website.layout" priority="50">
+        <!-- Replace head content with new styles -->
+        <xpath expr="//head" position="inside">
+            <style type="text/css">
+                <![CDATA[
+                /* ===== REALISTIC BLUE SKY GRADIENT ===== */
+                .sky-background {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(145deg, #b0e0ff 0%, #7ec8ff 40%, #4aa3ff 100%);
+                    z-index: -2;
+                    pointer-events: none;
+                }
+
+                /* ===== CLOUD ANIMATIONS ===== */
+                .cloud {
+                    position: fixed;
+                    background-image: url('/ramadan_ux_design/static/description/cloud.png');
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    pointer-events: none;
+                    z-index: -1;
+                    opacity: 0.8;
+                    animation: slideClouds linear infinite;
+                }
+
+                /* Multiple cloud variations for natural drift */
+                .cloud1 {
+                    width: 250px;
+                    height: 120px;
+                    top: 10%;
+                    left: -300px;
+                    animation-duration: 45s;
+                    animation-delay: 0s;
+                }
+                .cloud2 {
+                    width: 300px;
+                    height: 150px;
+                    top: 30%;
+                    left: -350px;
+                    animation-duration: 60s;
+                    animation-delay: 5s;
+                }
+                .cloud3 {
+                    width: 200px;
+                    height: 100px;
+                    top: 55%;
+                    left: -250px;
+                    animation-duration: 35s;
+                    animation-delay: 10s;
+                }
+                .cloud4 {
+                    width: 280px;
+                    height: 140px;
+                    top: 75%;
+                    left: -330px;
+                    animation-duration: 55s;
+                    animation-delay: 2s;
+                }
+                .cloud5 {
+                    width: 180px;
+                    height: 90px;
+                    top: 15%;
+                    left: -220px;
+                    animation-duration: 40s;
+                    animation-delay: 15s;
+                }
+                .cloud6 {
+                    width: 320px;
+                    height: 160px;
+                    top: 45%;
+                    left: -370px;
+                    animation-duration: 70s;
+                    animation-delay: 8s;
+                }
+                .cloud7 {
+                    width: 220px;
+                    height: 110px;
+                    top: 65%;
+                    left: -270px;
+                    animation-duration: 50s;
+                    animation-delay: 3s;
+                }
+                .cloud8 {
+                    width: 260px;
+                    height: 130px;
+                    top: 85%;
+                    left: -310px;
+                    animation-duration: 65s;
+                    animation-delay: 12s;
+                }
+
+                @keyframes slideClouds {
+                    0% {
+                        transform: translateX(0);
+                    }
+                    100% {
+                        transform: translateX(150vw); /* Move far right beyond screen */
+                    }
+                }
+
+                /* Responsive adjustments for smaller screens */
+                @media (max-width: 768px) {
+                    .cloud {
+                        opacity: 0.6; /* Lighter on mobile */
+                    }
+                    .cloud1 { width: 180px; height: 90px; }
+                    .cloud2 { width: 220px; height: 110px; }
+                    .cloud3 { width: 150px; height: 75px; }
+                    .cloud4 { width: 200px; height: 100px; }
+                    .cloud5 { width: 130px; height: 65px; }
+                    .cloud6 { width: 240px; height: 120px; }
+                    .cloud7 { width: 170px; height: 85px; }
+                    .cloud8 { width: 190px; height: 95px; }
+                }
+
+                /* Ensure content stays above background and clouds */
+                #wrap {
+                    position: relative;
+                    z-index: 10;
+                    background: transparent !important;
+                }
+
+                /* Navbar and interactive elements above everything */
+                .navbar, header, .o_main_navbar, .o_menu_sections, .o_menu_toggle {
+                    position: relative;
+                    z-index: 100 !important;
+                }
+                ]]>
+            </style>
+        </xpath>
+
+        <!-- Add sky background and clouds to body -->
+        <xpath expr="//body" position="inside">
+            <!-- Sky gradient background -->
+            <div class="sky-background"></div>
+
+            <!-- Drifting clouds -->
+            <div class="cloud cloud1"></div>
+            <div class="cloud cloud2"></div>
+            <div class="cloud cloud3"></div>
+            <div class="cloud cloud4"></div>
+            <div class="cloud cloud5"></div>
+            <div class="cloud cloud6"></div>
+            <div class="cloud cloud7"></div>
+            <div class="cloud cloud8"></div>
+        </xpath>
+
+        <!-- Remove any existing script (no longer needed) -->
+        <xpath expr="//body" position="after">
+            <!-- Intentionally empty – all old elements removed -->
+        </xpath>
+    </template>
+</odoo>
