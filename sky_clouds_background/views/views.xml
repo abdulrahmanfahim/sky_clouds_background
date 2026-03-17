@@ -202,13 +202,13 @@
                         
                         cloud.style.left = left + '%';
                         
-                        // Random speed (slower for larger clouds)
+                        // Random speed - DOUBLED for all sizes
                         let speed;
                         switch(sizeIndex) {
-                            case 0: speed = 0.015 + Math.random() * 0.01; break; // small
-                            case 1: speed = 0.01 + Math.random() * 0.008; break; // medium
-                            case 2: speed = 0.007 + Math.random() * 0.006; break; // large
-                            case 3: speed = 0.005 + Math.random() * 0.004; break; // xlarge
+                            case 0: speed = 0.03 + Math.random() * 0.02; break; // small (was 0.015)
+                            case 1: speed = 0.02 + Math.random() * 0.016; break; // medium (was 0.01)
+                            case 2: speed = 0.014 + Math.random() * 0.012; break; // large (was 0.007)
+                            case 3: speed = 0.01 + Math.random() * 0.008; break; // xlarge (was 0.005)
                         }
                         
                         // Random opacity
