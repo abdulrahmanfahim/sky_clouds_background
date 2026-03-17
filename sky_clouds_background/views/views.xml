@@ -20,7 +20,7 @@
                 /* ===== CLOUD ANIMATIONS ===== */
                 .cloud {
                     position: fixed;
-                    background-image: url('/ramadan_ux_design/static/description/cloud.png');
+                    background-image: url('/sky_clouds_background/static/description/cloud.png');
                     background-size: contain;
                     background-repeat: no-repeat;
                     pointer-events: none;
