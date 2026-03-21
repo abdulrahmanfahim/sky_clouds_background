@@ -38,7 +38,7 @@
                     backdrop-filter: blur(1px);
                 }
 
-                /* ===== CLOUDS - SMALLER & NEAR TOP ===== */
+                /* ===== LARGER CLOUDS ===== */
                 .cloud {
                     position: fixed;
                     background-image: url('/sky_clouds_background/static/description/cloud.png');
@@ -50,22 +50,22 @@
                     will-change: transform;
                 }
 
-                /* Reduced cloud sizes to avoid overlapping */
+                /* Larger cloud sizes */
                 .cloud-small {
-                    width: 60px;
-                    height: 30px;
-                }
-                .cloud-medium {
-                    width: 80px;
-                    height: 40px;
-                }
-                .cloud-large {
-                    width: 100px;
-                    height: 50px;
-                }
-                .cloud-xlarge {
                     width: 120px;
                     height: 60px;
+                }
+                .cloud-medium {
+                    width: 180px;
+                    height: 90px;
+                }
+                .cloud-large {
+                    width: 240px;
+                    height: 120px;
+                }
+                .cloud-xlarge {
+                    width: 300px;
+                    height: 150px;
                 }
 
                 /* ===== REALISTIC RAIN ANIMATION ===== */
@@ -105,12 +105,12 @@
                     }
                 }
 
-                /* Responsive adjustments */
+                /* Responsive adjustments - still larger than before */
                 @media (max-width: 768px) {
-                    .cloud-small { width: 40px; height: 20px; }
-                    .cloud-medium { width: 55px; height: 28px; }
-                    .cloud-large { width: 70px; height: 35px; }
-                    .cloud-xlarge { width: 85px; height: 42px; }
+                    .cloud-small { width: 80px; height: 40px; }
+                    .cloud-medium { width: 120px; height: 60px; }
+                    .cloud-large { width: 160px; height: 80px; }
+                    .cloud-xlarge { width: 200px; height: 100px; }
                     
                     .raindrop {
                         height: 15px;
@@ -161,7 +161,8 @@
                     // ===== CLOUD MANAGEMENT =====
                     const cloudSizes = ['small', 'medium', 'large', 'xlarge'];
                     const clouds = [];
-                    const maxClouds = isMobile ? 4 : 6;   // Fewer clouds to avoid overlap
+                    // Slightly more clouds because they're larger but still keep a balanced look
+                    const maxClouds = isMobile ? 6 : 9;
                     
                     // Create initial clouds
                     for (let i = 0; i < maxClouds; i++) {
@@ -175,9 +176,8 @@
                         const sizeIndex = Math.floor(Math.random() * cloudSizes.length);
                         cloud.className = `cloud cloud-${cloudSizes[sizeIndex]}`;
                         
-                        // ===== Constrain clouds to top 400px =====
-                        // Top is in pixels from the top edge, random between 0 and 400
-                        const top = Math.random() * 400;  // 0 to 400px
+                        // ===== Constrain clouds to top 300px =====
+                        const top = Math.random() * 300;  // 0 to 300px
                         cloud.style.top = top + 'px';
                         
                         // Random horizontal starting position
@@ -205,17 +205,17 @@
                         
                         cloud.style.left = left + '%';
                         
-                        // Random speed (adjusted for smaller size)
+                        // Random speed (adjusted for larger size)
                         let speed;
                         switch(sizeIndex) {
-                            case 0: speed = 0.03 + Math.random() * 0.02; break; // small
-                            case 1: speed = 0.02 + Math.random() * 0.016; break; // medium
-                            case 2: speed = 0.014 + Math.random() * 0.012; break; // large
-                            case 3: speed = 0.01 + Math.random() * 0.008; break; // xlarge
+                            case 0: speed = 0.025 + Math.random() * 0.018; break; // small
+                            case 1: speed = 0.018 + Math.random() * 0.014; break; // medium
+                            case 2: speed = 0.012 + Math.random() * 0.01; break; // large
+                            case 3: speed = 0.008 + Math.random() * 0.007; break; // xlarge
                         }
                         
                         // Random opacity
-                        cloud.style.opacity = 0.6 + Math.random() * 0.3;
+                        cloud.style.opacity = 0.7 + Math.random() * 0.25;
                         
                         cloudContainer.appendChild(cloud);
                         
