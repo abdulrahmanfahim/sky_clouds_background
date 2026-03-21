@@ -175,9 +175,9 @@
                         const sizeIndex = Math.floor(Math.random() * cloudSizes.length);
                         cloud.className = `cloud cloud-${cloudSizes[sizeIndex]}`;
                         
-                        // ===== Constrain clouds to top 50px =====
-                        // Top is in pixels from the top edge, random between 0 and 50
-                        const top = Math.random() * 50;  // 0 to 50px
+                        // ===== Constrain clouds to top 400px =====
+                        // Top is in pixels from the top edge, random between 0 and 400
+                        const top = Math.random() * 400;  // 0 to 400px
                         cloud.style.top = top + 'px';
                         
                         // Random horizontal starting position
