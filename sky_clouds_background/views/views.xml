@@ -38,7 +38,7 @@
                     backdrop-filter: blur(1px);
                 }
 
-                /* ===== CLOUDS - WILL BE POSITIONED BY JS ===== */
+                /* ===== CLOUDS - SMALLER & NEAR TOP ===== */
                 .cloud {
                     position: fixed;
                     background-image: url('/sky_clouds_background/static/description/cloud.png');
@@ -50,22 +50,22 @@
                     will-change: transform;
                 }
 
-                /* Different cloud sizes */
+                /* Reduced cloud sizes to avoid overlapping */
                 .cloud-small {
-                    width: 150px;
-                    height: 75px;
+                    width: 60px;
+                    height: 30px;
                 }
                 .cloud-medium {
-                    width: 220px;
-                    height: 110px;
+                    width: 80px;
+                    height: 40px;
                 }
                 .cloud-large {
-                    width: 300px;
-                    height: 150px;
+                    width: 100px;
+                    height: 50px;
                 }
                 .cloud-xlarge {
-                    width: 380px;
-                    height: 190px;
+                    width: 120px;
+                    height: 60px;
                 }
 
                 /* ===== REALISTIC RAIN ANIMATION ===== */
@@ -107,10 +107,10 @@
 
                 /* Responsive adjustments */
                 @media (max-width: 768px) {
-                    .cloud-small { width: 100px; height: 50px; }
-                    .cloud-medium { width: 150px; height: 75px; }
-                    .cloud-large { width: 200px; height: 100px; }
-                    .cloud-xlarge { width: 250px; height: 125px; }
+                    .cloud-small { width: 40px; height: 20px; }
+                    .cloud-medium { width: 55px; height: 28px; }
+                    .cloud-large { width: 70px; height: 35px; }
+                    .cloud-xlarge { width: 85px; height: 42px; }
                     
                     .raindrop {
                         height: 15px;
@@ -161,7 +161,7 @@
                     // ===== CLOUD MANAGEMENT =====
                     const cloudSizes = ['small', 'medium', 'large', 'xlarge'];
                     const clouds = [];
-                    const maxClouds = isMobile ? 8 : 15;
+                    const maxClouds = isMobile ? 4 : 6;   // Fewer clouds to avoid overlap
                     
                     // Create initial clouds
                     for (let i = 0; i < maxClouds; i++) {
@@ -175,12 +175,12 @@
                         const sizeIndex = Math.floor(Math.random() * cloudSizes.length);
                         cloud.className = `cloud cloud-${cloudSizes[sizeIndex]}`;
                         
-                        // Random vertical position (scattered throughout the sky)
-                        const top = Math.random() * 80 + 5; // 5% to 85% from top
-                        cloud.style.top = top + '%';
+                        // ===== Constrain clouds to top 50px =====
+                        // Top is in pixels from the top edge, random between 0 and 50
+                        const top = Math.random() * 50;  // 0 to 50px
+                        cloud.style.top = top + 'px';
                         
                         // Random horizontal starting position
-                        // 70% chance to start off-screen on left or right
                         let left;
                         let direction;
                         
@@ -205,7 +205,7 @@
                         
                         cloud.style.left = left + '%';
                         
-                        // Random speed - DOUBLED for all sizes
+                        // Random speed (adjusted for smaller size)
                         let speed;
                         switch(sizeIndex) {
                             case 0: speed = 0.03 + Math.random() * 0.02; break; // small
