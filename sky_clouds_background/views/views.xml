@@ -167,9 +167,160 @@
             <button id="sound-control" class="sound-control" title="Toggle Rain Sound">🔊</button>
         </xpath>
 
-        <!-- Include external JavaScript -->
+        <!-- JavaScript with CDATA -->
         <xpath expr="//body" position="after">
-            <script type="text/javascript" src="/sky_clouds_background/static/src/js/clouds.js"/>
+            <script type="text/javascript">
+                <![CDATA[
+                document.addEventListener('DOMContentLoaded', function() {
+                    var cloudContainer = document.getElementById('cloud-container');
+                    var rainContainer = document.getElementById('rain-container');
+                    var audio = document.getElementById('rain-sound');
+                    var soundControl = document.getElementById('sound-control');
+                    var isMobile = window.innerWidth <= 768;
+                    
+                    // ===== SOUND MANAGEMENT =====
+                    var isSoundEnabled = true;
+                    
+                    function playAudio() {
+                        if (!audio) return;
+                        audio.volume = 0.3;
+                        var playPromise = audio.play();
+                        if (playPromise !== undefined) {
+                            playPromise.then(function() {
+                                console.log('Rain sound started playing');
+                                isSoundEnabled = true;
+                                if (soundControl) soundControl.textContent = '🔊';
+                            }).catch(function(error) {
+                                console.log('Autoplay prevented. User interaction needed.');
+                                isSoundEnabled = false;
+                                if (soundControl) soundControl.textContent = '🔇';
+                                var enableSoundOnInteraction = function() {
+                                    audio.play().then(function() {
+                                        isSoundEnabled = true;
+                                        if (soundControl) soundControl.textContent = '🔊';
+                                    }).catch(function(e) {
+                                        console.log('Still cannot play:', e);
+                                    });
+                                    document.removeEventListener('click', enableSoundOnInteraction);
+                                    document.removeEventListener('touchstart', enableSoundOnInteraction);
+                                };
+                                document.addEventListener('click', enableSoundOnInteraction);
+                                document.addEventListener('touchstart', enableSoundOnInteraction);
+                            });
+                        }
+                    }
+                    
+                    if (soundControl) {
+                        soundControl.addEventListener('click', function() {
+                            if (isSoundEnabled && !audio.paused) {
+                                audio.pause();
+                                isSoundEnabled = false;
+                                soundControl.textContent = '🔇';
+                            } else {
+                                audio.play().then(function() {
+                                    isSoundEnabled = true;
+                                    soundControl.textContent = '🔊';
+                                }).catch(function(e) {
+                                    console.log('Playback failed:', e);
+                                });
+                            }
+                        });
+                    }
+                    
+                    playAudio();
+                    
+                    // ===== CLOUD MANAGEMENT =====
+                    var cloudSizes = ['small', 'medium', 'large', 'xlarge'];
+                    var clouds = [];
+                    var maxClouds = isMobile ? 6 : 9;
+                    
+                    for (var i = 0; i < maxClouds; i++) {
+                        createCloud(true);
+                    }
+                    
+                    function createCloud(initial) {
+                        var cloud = document.createElement('div');
+                        var sizeIndex = Math.floor(Math.random() * cloudSizes.length);
+                        cloud.className = 'cloud cloud-' + cloudSizes[sizeIndex];
+                        var top = Math.random() * 300;
+                        cloud.style.top = top + 'px';
+                        var left;
+                        var direction;
+                        if (initial) {
+                            if (Math.random() > 0.3) {
+                                left = Math.random() * 100;
+                            } else {
+                                left = -30 + Math.random() * 20;
+                            }
+                            direction = Math.random() > 0.5 ? 'right' : 'left';
+                        } else {
+                            if (Math.random() > 0.5) {
+                                left = -40 + Math.random() * 20;
+                                direction = 'right';
+                            } else {
+                                left = 120 + Math.random() * 20;
+                                direction = 'left';
+                            }
+                        }
+                        cloud.style.left = left + '%';
+                        var speed;
+                        switch(sizeIndex) {
+                            case 0: speed = 0.025 + Math.random() * 0.018; break;
+                            case 1: speed = 0.018 + Math.random() * 0.014; break;
+                            case 2: speed = 0.012 + Math.random() * 0.01; break;
+                            case 3: speed = 0.008 + Math.random() * 0.007; break;
+                        }
+                        cloud.style.opacity = 0.7 + Math.random() * 0.25;
+                        cloudContainer.appendChild(cloud);
+                        clouds.push({
+                            element: cloud,
+                            left: left,
+                            direction: direction || (Math.random() > 0.5 ? 'right' : 'left'),
+                            speed: speed,
+                            sizeIndex: sizeIndex
+                        });
+                    }
+                    
+                    // ===== RAIN GENERATION =====
+                    if (rainContainer) {
+                        rainContainer.innerHTML = '';
+                        var raindropCount = isMobile ? 150 : 300;
+                        for (var i = 0; i < raindropCount; i++) {
+                            var raindrop = document.createElement('div');
+                            raindrop.className = 'raindrop';
+                            raindrop.style.left = Math.random() * 100 + '%';
+                            raindrop.style.top = (Math.random() * 100) + '%';
+                            var duration = isMobile ? 1.5 + Math.random() * 1.5 : 2 + Math.random() * 2;
+                            raindrop.style.animation = 'rain ' + duration + 's linear infinite';
+                            raindrop.style.animationDelay = (Math.random() * 3) + 's';
+                            var height = isMobile ? 12 + Math.random() * 8 : 18 + Math.random() * 12;
+                            raindrop.style.height = height + 'px';
+                            rainContainer.appendChild(raindrop);
+                        }
+                    }
+                    
+                    // ===== ANIMATION LOOP =====
+                    function animateClouds() {
+                        for (var i = clouds.length - 1; i >= 0; i--) {
+                            var cloud = clouds[i];
+                            if (cloud.direction === 'right') {
+                                cloud.left += cloud.speed;
+                            } else {
+                                cloud.left -= cloud.speed;
+                            }
+                            cloud.element.style.left = cloud.left + '%';
+                            if (cloud.left > 140 || cloud.left < -40) {
+                                cloud.element.remove();
+                                clouds.splice(i, 1);
+                                createCloud(false);
+                            }
+                        }
+                        requestAnimationFrame(animateClouds);
+                    }
+                    animateClouds();
+                });
+                ]]>
+            </script>
         </xpath>
     </template>
 </odoo>
